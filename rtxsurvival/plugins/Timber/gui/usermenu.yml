@@ -1,0 +1,21 @@
+treecuting:
+  enable:
+    title: '&bProperty: &3Tree cutting'
+    lore:
+    - '&bStatus: §aEnable'
+    - '&bEnable instant tree cutting'
+  disable:
+    title: '&bProperty: &3Tree cutting'
+    lore:
+    - '&bStatus: &4Disable'
+    - '&6Disable instant tree cutting'
+gui:
+  # Works only after server reboot
+  # the rest is reloaded with the /timber reload command
+  title: User menu
+effects:
+  description: '&bSelected particle: &a{particle}'
+  descriptionnotselected: '&bLeft click to open Effects menu'
+  title: '&eEffects'
+  descriptionselected: '&bRight click to remove particle'
+norightmessage: '&4No rights.'
