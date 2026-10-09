@@ -1,0 +1,68 @@
+# Sensitive Credentials & Local Environment
+credentials.txt
+.env
+*.key
+*.pem
+*.secret
+
+# Minecraft Worlds & Region Data
+rtxsurvival/world/
+rtxsurvival/world_nether/
+rtxsurvival/world_the_end/
+world/
+
+# Backups & Server Archives
+rtxsurvival/backups/
+*.tar.gz
+*.zip.bak
+
+# Server Runtime Caches, Logs & Binaries
+rtxsurvival/cache/
+rtxsurvival/logs/
+rtxsurvival/downloads/
+rtxsurvival/libraries/
+rtxsurvival/versions/
+rtxsurvival/.paper/
+rtxsurvival/purpur.jar
+rtxsurvival/.console_history
+rtxsurvival/crash-reports/
+rtxsurvival/.paper-remapped/
+rtxsurvival/plugins/.paper-remapped/
+rtxsurvival/plugins/*.bak
+rtxsurvival/plugins/*.disabled
+rtxsurvival/plugins/Geyser-Spigot/
+
+# Player Data & Sensitive Databases
+rtxsurvival/usercache.json
+rtxsurvival/banned-players.json
+rtxsurvival/banned-ips.json
+rtxsurvival/ops.json
+rtxsurvival/whitelist.json
+rtxsurvival/plugins/LoginSecurity/*.db*
+rtxsurvival/plugins/DeadChest/*.db*
+rtxsurvival/plugins/DeadChest/deadchest.log
+rtxsurvival/plugins/Minepacks/*.db*
+rtxsurvival/plugins/Minepacks/backups/
+rtxsurvival/plugins/Timber/playerdata/
+rtxsurvival/plugins/OpenInv/profiles.db*
+*.db*
+
+# Map Tile Renders & Web Assets
+rtxsurvival/plugins/dynmap/web/
+rtxsurvival/plugins/bluemap/data/
+rtxsurvival/plugins/bluemap/web/
+rtxsurvival/data/
+rtxsurvival/web/
+
+# Proxy & Plugin Temp/Cache/Logs
+rtxsurvival/geyser/cache/
+rtxsurvival/geyser/logs/
+rtxsurvival/geyser/packs/
+rtxsurvival/plugins/spark/tmp/
+rtxsurvival/plugins/spark/tmp-client/
+*.tmp
+
+# OS / Editor files
+.DS_Store
+*.swp
+*~
