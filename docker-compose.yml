@@ -1,0 +1,88 @@
+services:
+  server:
+    image: 05jchambers/legendary-minecraft-purpur-geyser:latest
+    container_name: server
+    ports:
+      - "${SERVER_PORT:-25565}:25565"
+      # - "${DYNMAP_PORT:-8123}:8123" # Dynmap requires upstream 26.3 CraftBukkit adapters; BlueMap is active on port 8100
+    volumes:
+      - ./rtxsurvival:/minecraft
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+      - Version=${MINECRAFT_VERSION:-26.3}
+      - Port=${SERVER_PORT:-25565}
+      - MaxMemory=${MAX_MEMORY:-4096}
+      - NoBackup=
+      - NoPermCheck=true
+    # Entrypoint wrapper ensures 'minecraft' user gets UID/GID 1000 so all files stay userspace-accessible,
+    # prevents downloading incompatible Geyser-Spigot plugin on 26.3, and skips redundant tar backups.
+    entrypoint:
+      - /bin/bash
+      - -c
+      - |
+        if [ "$$(id -u)" = "0" ]; then
+          userdel -r ubuntu 2>/dev/null || true
+          groupdel ubuntu 2>/dev/null || true
+          if ! id minecraft >/dev/null 2>&1; then
+            groupadd -g $${PGID:-1000} minecraft 2>/dev/null || true
+            useradd -u $${PUID:-1000} -g $${PGID:-1000} -m -s /bin/bash minecraft 2>/dev/null || true
+          else
+            usermod -u $${PUID:-1000} minecraft 2>/dev/null || true
+            groupmod -g $${PGID:-1000} minecraft 2>/dev/null || true
+          fi
+        fi
+        sed -i 's|.*Geyser-Spigot.jar.*|:|' /scripts/start.sh 2>/dev/null || true
+        sed -i 's|tar "$${tarArgs\[@\]}"|:|' /scripts/start.sh 2>/dev/null || true
+        rm -f /minecraft/plugins/Geyser-Spigot.jar 2>/dev/null || true
+        exec /scripts/start.sh "$$@"
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+
+  geyser:
+    image: 05jchambers/legendary-minecraft-purpur-geyser:latest
+    container_name: geyser
+    restart: unless-stopped
+    working_dir: /geyser
+    entrypoint:
+      - java
+      - -Xms256M
+      - -Xmx1024M
+      - -jar
+      - Geyser-Standalone.jar
+      - --nogui
+    volumes:
+      - ./rtxsurvival/geyser:/geyser
+    ports:
+      - "${BEDROCK_PORT:-19132}:19132/udp"
+      - "${BEDROCK_PORT:-19132}:19132"
+    depends_on:
+      - server
+
+  bluemap:
+    image: ghcr.io/bluemap-minecraft/bluemap:master
+    container_name: bluemap
+    restart: unless-stopped
+    user: "${PUID:-1000}:${PGID:-1000}"
+    ports:
+      - "${BLUEMAP_PORT:-8100}:8100"
+    volumes:
+      - ./rtxsurvival/plugins/bluemap/config:/app/config
+      - ./rtxsurvival/world:/app/world:ro
+      - ./rtxsurvival/plugins/bluemap/data:/app/data
+      - ./rtxsurvival/plugins/bluemap/web:/app/web
+    command: -r -u -w
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+    depends_on:
+      - server
+
+  playit:
+    image: ghcr.io/playit-cloud/playit-agent:0.15
+    container_name: playit
+    network_mode: host
+    restart: unless-stopped
+    environment:
+      - SECRET_KEY=${PLAYIT_SECRET_KEY:-}
