@@ -1,6 +1,7 @@
 {
   "hologram.state.public": "§a🔓 公开",
   "commands.list.title.player": "§a{0} 的死亡箱:",
+  "chest.inventory-full": "§e背包已满 §8• §7未取回任何物品。§f请腾出背包空间，然后再次点击箱子。",
   "commands.operation.holograms-removed": "§6操作完成。已移除 [{0}] 个全息",
   "commands.list.entry.infinity": "-§b 世界: §f{0} |§b X: §f{1}§b Y: §f{2}§b Z: §f{3} | ∞ {4}",
   "commands.giveback.success.target": "§a你已通过 {1} 取回 {0} 个死亡箱",
@@ -46,6 +47,7 @@
   "commands.giveback.queued.sender": "§aQueued {0} deadchest(s) for {1} using {2}",
   "death.above-max-height": "§c你死在了最大高度之上。",
   "commands.operation.deadchests-removed-player": "§6操作完成。已移除玩家 {1} 的 [{0}] 个死亡箱",
+  "chest.partial-recovery": "§6已取回部分物品 §8• §e剩余物品仍在箱子中。§f请腾出背包空间，然后再次点击以取回物品。",
   "commands.list.none.global": "§a当前没有任何死亡箱",
   "commands.giveback.preview.list.title": "§aGiveback preview list for {0} ({1}):",
   "commands.config.get.success": "§6{0} = §f{1}",

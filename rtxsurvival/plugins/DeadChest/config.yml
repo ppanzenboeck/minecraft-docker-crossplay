@@ -56,7 +56,7 @@ chest:
   # Item recovery mode when claiming a chest:
   # - inventory-then-ground = fill inventory first, drop overflow
   # - ground-drop           = drop everything on the ground
-  recovery-mode: inventory-then-ground
+  recovery-mode: inventory
   
   # Block type used to represent a DeadChest:
   # chest | player-head | barrel | shulker-box | ender-chest

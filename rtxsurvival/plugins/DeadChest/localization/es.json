@@ -1,6 +1,7 @@
 {
   "hologram.state.public": "§a🔓 PUBLICO",
   "commands.list.title.player": "§aDeadchests de {0}:",
+  "chest.inventory-full": "§eInventario lleno §8• §7No se ha recogido ningún objeto. §fLibera espacio y vuelve a hacer clic en el cofre.",
   "commands.operation.holograms-removed": "§6Operación completada. [{0}] holograma(s) eliminado(s)",
   "commands.list.entry.infinity": "-§b Mundo: §f{0} |§b X: §f{1}§b Y: §f{2}§b Z: §f{3} | ∞ {4}",
   "commands.giveback.success.target": "§aHas recuperado {0} deadchest(s) usando {1}",
@@ -46,6 +47,7 @@
   "commands.giveback.queued.sender": "§aQueued {0} deadchest(s) for {1} using {2}",
   "death.above-max-height": "§cHas muerto por encima de la altura máxima.",
   "commands.operation.deadchests-removed-player": "§6Operación completada. [{0}] deadchest(s) eliminados del jugador {1}",
+  "chest.partial-recovery": "§6Recuperación parcial §8• §eLos objetos restantes siguen en el cofre. §fLibera espacio y vuelve a hacer clic para recogerlos.",
   "commands.list.none.global": "§aActualmente no hay ningún deadchest",
   "commands.giveback.preview.list.title": "§aGiveback preview list for {0} ({1}):",
   "commands.config.get.success": "§6{0} = §f{1}",
