@@ -7,7 +7,7 @@ services:
       - "${DYNMAP_PORT:-8123}:8123"
       - "127.0.0.1:${RCON_PORT:-25575}:25575"
     volumes:
-      - ./rtxsurvival:/minecraft
+      - ./data:/minecraft
     environment:
       - PUID=${PUID:-1000}
       - PGID=${PGID:-1000}
@@ -54,7 +54,7 @@ services:
       - Geyser-Standalone.jar
       - --nogui
     volumes:
-      - ./rtxsurvival/geyser:/geyser
+      - ./data/geyser:/geyser
     ports:
       - "${BEDROCK_PORT:-19132}:19132/udp"
       - "${BEDROCK_PORT:-19132}:19132"
@@ -69,10 +69,10 @@ services:
     ports:
       - "${BLUEMAP_PORT:-8100}:8100"
     volumes:
-      - ./rtxsurvival/plugins/bluemap/config:/app/config
-      - ./rtxsurvival/world:/app/world:ro
-      - ./rtxsurvival/plugins/bluemap/data:/app/data
-      - ./rtxsurvival/plugins/bluemap/web:/app/web
+      - ./data/plugins/bluemap/config:/app/config
+      - ./data/world:/app/world:ro
+      - ./data/plugins/bluemap/data:/app/data
+      - ./data/plugins/bluemap/web:/app/web
     command: -r -u -w
     environment:
       - PUID=${PUID:-1000}

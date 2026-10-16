@@ -346,12 +346,12 @@ Because world files are gitignored to keep the repository clean and light, you c
    docker compose down
    ```
 2. **Copy Overworld Files:**
-   - Copy your singleplayer world contents (`region/`, `entities/`, `data/`, `level.dat`) into `rtxsurvival/world/`.
+   - Copy your singleplayer world contents (`region/`, `entities/`, `data/`, `level.dat`) into `data/world/`.
 3. **Migrate Nether & The End (Paper Directory Structure):**
    - Singleplayer Minecraft stores the Nether in `world/DIM-1/` and The End in `world/DIM1/`.
    - Paper/Purpur separates them into distinct root directories:
-     - Move the contents of `DIM-1/` into `rtxsurvival/world_nether/DIM-1/`.
-     - Move the contents of `DIM1/` into `rtxsurvival/world_the_end/DIM1/`.
+     - Move the contents of `DIM-1/` into `data/world_nether/DIM-1/`.
+     - Move the contents of `DIM1/` into `data/world_the_end/DIM1/`.
 4. **Re-render the 3D Web Map:**
    After starting the server, run:
    ```bash
@@ -373,7 +373,7 @@ Because world files are gitignored to keep the repository clean and light, you c
 ├── credentials.example.txt         # Template for server credentials (safe for git)
 ├── credentials.txt                 # Your private credentials & tokens (gitignored)
 ├── .gitignore                      # Ignore worlds, logs, secrets, and tile caches
-└── rtxsurvival/                    # Minecraft server root directory
+└── data/                           # Minecraft server root directory
     ├── server.properties           # Main server properties (protected by skip-worktree)
     ├── purpur.yml                  # Purpur configurations
     ├── spigot.yml                  # Spigot configurations

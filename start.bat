@@ -8,7 +8,7 @@ cd /d "%SCRIPT_DIR%"
 set "CREDENTIALS_FILE=%SCRIPT_DIR%credentials.txt"
 set "TEMPLATE_FILE=%SCRIPT_DIR%credentials.example.txt"
 set "ENV_FILE=%SCRIPT_DIR%.env"
-set "SERVER_PROPS=%SCRIPT_DIR%rtxsurvival\server.properties"
+set "SERVER_PROPS=%SCRIPT_DIR%data\server.properties"
 
 :: Ensure credentials.txt exists
 if not exist "%CREDENTIALS_FILE%" (
@@ -80,17 +80,17 @@ if exist "%SERVER_PROPS%" (
 )
 
 :: Ensure canonical directories exist
-if not exist "rtxsurvival\plugins\dynmap" mkdir "rtxsurvival\plugins\dynmap"
-if not exist "rtxsurvival\plugins\bluemap\config" mkdir "rtxsurvival\plugins\bluemap\config"
-if not exist "rtxsurvival\plugins\bluemap\data" mkdir "rtxsurvival\plugins\bluemap\data"
-if not exist "rtxsurvival\plugins\bluemap\web" mkdir "rtxsurvival\plugins\bluemap\web"
-if not exist "rtxsurvival\geyser" mkdir "rtxsurvival\geyser"
+if not exist "data\plugins\dynmap" mkdir "data\plugins\dynmap"
+if not exist "data\plugins\bluemap\config" mkdir "data\plugins\bluemap\config"
+if not exist "data\plugins\bluemap\data" mkdir "data\plugins\bluemap\data"
+if not exist "data\plugins\bluemap\web" mkdir "data\plugins\bluemap\web"
+if not exist "data\geyser" mkdir "data\geyser"
 
 :: Sync Floodgate authentication key to Geyser Standalone proxy
-if exist "rtxsurvival\plugins\floodgate\key.pem" (
-    if not exist "rtxsurvival\geyser\key.pem" (
+if exist "data\plugins\floodgate\key.pem" (
+    if not exist "data\geyser\key.pem" (
         echo [*] Syncing Floodgate key.pem to Geyser...
-        copy "rtxsurvival\plugins\floodgate\key.pem" "rtxsurvival\geyser\key.pem" >nul
+        copy "data\plugins\floodgate\key.pem" "data\geyser\key.pem" >nul
     )
 )
 

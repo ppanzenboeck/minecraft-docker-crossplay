@@ -10,7 +10,7 @@ cd "${SCRIPT_DIR}"
 CREDENTIALS_FILE="${SCRIPT_DIR}/credentials.txt"
 TEMPLATE_FILE="${SCRIPT_DIR}/credentials.example.txt"
 ENV_FILE="${SCRIPT_DIR}/.env"
-SERVER_PROPS="${SCRIPT_DIR}/rtxsurvival/server.properties"
+SERVER_PROPS="${SCRIPT_DIR}/data/server.properties"
 
 # Ensure credentials.txt exists
 if [ ! -f "${CREDENTIALS_FILE}" ]; then
@@ -114,12 +114,12 @@ if [ -f "${SERVER_PROPS}" ]; then
 fi
 
 # Ensure canonical plugin and proxy directories exist
-mkdir -p rtxsurvival/plugins/dynmap rtxsurvival/plugins/bluemap/config rtxsurvival/plugins/bluemap/data rtxsurvival/plugins/bluemap/web rtxsurvival/geyser
+mkdir -p data/plugins/dynmap data/plugins/bluemap/config data/plugins/bluemap/data data/plugins/bluemap/web data/geyser
 
 # Sync Floodgate authentication key to Geyser Standalone proxy
-if [ -f "rtxsurvival/plugins/floodgate/key.pem" ] && [ ! -f "rtxsurvival/geyser/key.pem" ]; then
+if [ -f "data/plugins/floodgate/key.pem" ] && [ ! -f "data/geyser/key.pem" ]; then
   echo "[*] Syncing Floodgate key.pem to Geyser..."
-  cp "rtxsurvival/plugins/floodgate/key.pem" "rtxsurvival/geyser/key.pem"
+  cp "data/plugins/floodgate/key.pem" "data/geyser/key.pem"
 fi
 
 echo "[*] Starting containers with Docker Compose..."

@@ -6,60 +6,59 @@ credentials.txt
 *.secret
 
 # Minecraft Worlds & Region Data
-rtxsurvival/world/
-rtxsurvival/world_nether/
-rtxsurvival/world_the_end/
+data/world/
+data/world_nether/
+data/world_the_end/
 world/
 
 # Backups & Server Archives
-rtxsurvival/backups/
+data/backups/
 *.tar.gz
 *.zip.bak
 
 # Server Runtime Caches, Logs & Binaries
-rtxsurvival/cache/
-rtxsurvival/logs/
-rtxsurvival/downloads/
-rtxsurvival/libraries/
-rtxsurvival/versions/
-rtxsurvival/.paper/
-rtxsurvival/purpur.jar
-rtxsurvival/.console_history
-rtxsurvival/crash-reports/
-rtxsurvival/.paper-remapped/
-rtxsurvival/plugins/.paper-remapped/
-rtxsurvival/plugins/*.bak
-rtxsurvival/plugins/*.disabled
-rtxsurvival/plugins/Geyser-Spigot/
+data/cache/
+data/logs/
+data/downloads/
+data/libraries/
+data/versions/
+data/.paper/
+data/purpur.jar
+data/.console_history
+data/crash-reports/
+data/.paper-remapped/
+data/plugins/.paper-remapped/
+data/plugins/*.bak
+data/plugins/*.disabled
+data/plugins/Geyser-Spigot/
 
 # Player Data & Sensitive Databases
-rtxsurvival/usercache.json
-rtxsurvival/banned-players.json
-rtxsurvival/banned-ips.json
-rtxsurvival/ops.json
-rtxsurvival/whitelist.json
-rtxsurvival/plugins/LoginSecurity/*.db*
-rtxsurvival/plugins/DeadChest/*.db*
-rtxsurvival/plugins/DeadChest/deadchest.log
-rtxsurvival/plugins/Minepacks/*.db*
-rtxsurvival/plugins/Minepacks/backups/
-rtxsurvival/plugins/Timber/playerdata/
-rtxsurvival/plugins/OpenInv/profiles.db*
+data/usercache.json
+data/banned-players.json
+data/banned-ips.json
+data/ops.json
+data/whitelist.json
+data/plugins/LoginSecurity/*.db*
+data/plugins/DeadChest/*.db*
+data/plugins/DeadChest/deadchest.log
+data/plugins/Minepacks/*.db*
+data/plugins/Minepacks/backups/
+data/plugins/Timber/playerdata/
+data/plugins/OpenInv/profiles.db*
 *.db*
 
 # Map Tile Renders & Web Assets
-rtxsurvival/plugins/dynmap/web/
-rtxsurvival/plugins/bluemap/data/
-rtxsurvival/plugins/bluemap/web/
-rtxsurvival/data/
-rtxsurvival/web/
+data/plugins/dynmap/web/
+data/plugins/bluemap/data/
+data/plugins/bluemap/web/
+data/web/
 
 # Proxy & Plugin Temp/Cache/Logs
-rtxsurvival/geyser/cache/
-rtxsurvival/geyser/logs/
-rtxsurvival/geyser/packs/
-rtxsurvival/plugins/spark/tmp/
-rtxsurvival/plugins/spark/tmp-client/
+data/geyser/cache/
+data/geyser/logs/
+data/geyser/packs/
+data/plugins/spark/tmp/
+data/plugins/spark/tmp-client/
 *.tmp
 
 # OS / Editor files
