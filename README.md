@@ -114,9 +114,59 @@ To run administrative commands (`op <player>`, `whitelist add <player>`, `say`, 
 
 ---
 
+## Connecting to the Server
+
+### 1. Local Network / LAN Connection (Playing on the Same Home Network)
+
+If you are playing on the machine hosting the server, or from another computer/laptop/phone connected to the same home Wi-Fi network, you **do not need Playit.gg or any internet tunnels**.
+
+#### A. Playing on the Host Machine (Same PC running Docker):
+- **Java Edition:** Direct Connect to `localhost` (or `127.0.0.1:25565`).
+- **Bedrock Edition:** Add Server with Address `127.0.0.1` and Port `19132`.
+- **BlueMap Web Map:** Open your browser to `http://localhost:8100`.
+
+#### B. Playing from Another Device on Same Wi-Fi (e.g. Laptop, Phone, Tablet):
+To connect from another device in your home, use the **local IP address** of the host PC running Docker (e.g. `192.168.1.10`).
+
+1. **Find Your Host PC's Local IP Address:**
+   - **Linux:** Open terminal and run:
+     ```bash
+     ip -br a
+     # or:
+     hostname -I
+     ```
+     Look for your local IP (typically `192.168.x.x` or `10.0.0.x`; ignore `docker0` / `172.x` virtual bridges).
+   - **Windows:** Open Command Prompt or PowerShell and run:
+     ```cmd
+     ipconfig
+     ```
+     Look for `IPv4 Address` under your active Wi-Fi or Ethernet adapter (e.g. `192.168.1.10`).
+
+2. **Connect from Your Laptop or Mobile Device:**
+   - **Java Edition:** In Multiplayer -> Direct Connect (or Add Server), enter:
+     ```
+     192.168.1.10:25565
+     ```
+     *(or just `192.168.1.10` since 25565 is the default Minecraft port).*
+   - **Bedrock Edition:** In Play -> Servers -> Add Server, enter:
+     - **Server Name:** `Home Server`
+     - **Server Address:** `192.168.1.10`
+     - **Port:** `19132` (the standard Bedrock default port).
+   - **BlueMap 3D Map:** Open any browser on your laptop or phone:
+     ```
+     http://192.168.1.10:8100
+     ```
+
+> [!TIP]
+> **Firewall Note:** If connection times out from another local device, check that the host PC firewall permits local incoming connections:
+> - **Windows:** If prompted by Windows Defender Firewall, check **"Allow on Private networks"**.
+> - **Linux:** If using `ufw`, allow local subnet traffic (e.g., `sudo ufw allow 25565/tcp && sudo ufw allow 19132/udp && sudo ufw allow 8100/tcp`).
+
+---
+
 ## Internet Access & Tunneling
 
-### 1. Game Server Access (Playit.gg Zero-Portforwarding)
+### 2. Game Server Access (Playit.gg Zero-Portforwarding)
 
 Playit.gg creates an encrypted outbound tunnel connecting your local Docker server to Playit's global proxy network. Your router requires **zero port-forwarding**, and your personal home IP address is **never exposed**.
 
