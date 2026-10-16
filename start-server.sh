@@ -159,9 +159,9 @@ echo " - Java Edition Port:    ${SERVER_PORT} (TCP)"
 echo " - Bedrock Edition Port: ${BEDROCK_PORT} (UDP/TCP)"
 echo " - Dynmap Web Map:       http://localhost:${DYNMAP_PORT}"
 echo " - BlueMap 3D Web Map:   http://localhost:${BLUEMAP_PORT}"
-# Resolve active Cloudflare public tunnel URL (wait briefly if newly connecting)
+# Resolve active Cloudflare public tunnel URL (wait up to 10s if newly connecting)
 CF_URL=""
-for i in {1..4}; do
+for i in {1..10}; do
   CF_URL="$(docker logs bluemap-tunnel 2>&1 | grep -oE 'https://[a-zA-Z0-9.-]+\.trycloudflare\.com' | tail -1 || true)"
   if [ -n "${CF_URL}" ]; then
     break
@@ -171,6 +171,8 @@ done
 
 if [ -n "${CF_URL}" ]; then
   echo " - BlueMap Public HTTPS: ${CF_URL}"
+else
+  echo " - BlueMap Public HTTPS: Initializing in background (check 'docker logs bluemap-tunnel' in a moment)"
 fi
 if [ -n "${PLAYIT_SECRET_KEY}" ] && [ "${PLAYIT_SECRET_KEY}" != "your_playit_secret_key_here" ]; then
   echo " - Playit Tunnel:        Enabled (monitoring tunnel in background)"
