@@ -4,7 +4,7 @@ services:
     container_name: server
     ports:
       - "${SERVER_PORT:-25565}:25565"
-      # - "${DYNMAP_PORT:-8123}:8123" # Dynmap requires upstream 26.3 CraftBukkit adapters; BlueMap is active on port 8100
+      - "${DYNMAP_PORT:-8123}:8123"
     volumes:
       - ./rtxsurvival:/minecraft
     environment:
@@ -86,3 +86,19 @@ services:
     restart: unless-stopped
     environment:
       - SECRET_KEY=${PLAYIT_SECRET_KEY:-}
+
+  cloudflared-bluemap:
+    image: cloudflare/cloudflared:latest
+    container_name: bluemap-tunnel
+    restart: unless-stopped
+    command: tunnel --no-autoupdate --url http://bluemap:8100
+    depends_on:
+      - bluemap
+
+  cloudflared-dynmap:
+    image: cloudflare/cloudflared:latest
+    container_name: dynmap-tunnel
+    restart: unless-stopped
+    command: tunnel --no-autoupdate --url http://server:8123
+    depends_on:
+      - server
