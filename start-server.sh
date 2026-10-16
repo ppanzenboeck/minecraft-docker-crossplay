@@ -69,6 +69,8 @@ SERVER_PORT="${SERVER_PORT:-25565}"
 BEDROCK_PORT="${BEDROCK_PORT:-19132}"
 DYNMAP_PORT="${DYNMAP_PORT:-8123}"
 BLUEMAP_PORT="${BLUEMAP_PORT:-8100}"
+RCON_PORT="${RCON_PORT:-25575}"
+RCON_PASSWORD="${RCON_PASSWORD:-}"
 PLAYIT_SECRET_KEY="${PLAYIT_SECRET_KEY:-}"
 
 # Update .env with resolved defaults
@@ -80,6 +82,8 @@ echo "SERVER_PORT=${SERVER_PORT}" >> "${ENV_FILE}"
 echo "BEDROCK_PORT=${BEDROCK_PORT}" >> "${ENV_FILE}"
 echo "DYNMAP_PORT=${DYNMAP_PORT}" >> "${ENV_FILE}"
 echo "BLUEMAP_PORT=${BLUEMAP_PORT}" >> "${ENV_FILE}"
+echo "RCON_PORT=${RCON_PORT}" >> "${ENV_FILE}"
+echo "RCON_PASSWORD=${RCON_PASSWORD}" >> "${ENV_FILE}"
 
 # Inject properties into server.properties if present
 if [ -f "${SERVER_PROPS}" ]; then
@@ -101,7 +105,11 @@ if [ -f "${SERVER_PROPS}" ]; then
   update_prop "query.port" "${SERVER_PORT}"
   update_prop "server-name" "${SERVER_NAME:-P.A.N.Z. Crossplay Server}"
   update_prop "motd" "${SERVER_MOTD:-Welcome to Minecraft 26.3 Purpur Crossplay Server!}"
-  [ -n "${RCON_PASSWORD:-}" ] && update_prop "rcon.password" "${RCON_PASSWORD}"
+  if [ -n "${RCON_PASSWORD}" ]; then
+    update_prop "enable-rcon" "true"
+    update_prop "rcon.port" "${RCON_PORT}"
+    update_prop "rcon.password" "${RCON_PASSWORD}"
+  fi
   [ -n "${MANAGEMENT_SERVER_SECRET:-}" ] && update_prop "management-server-secret" "${MANAGEMENT_SERVER_SECRET}"
 fi
 
@@ -136,6 +144,7 @@ else
   echo " - Playit Tunnel:        No secret key provided (local access only)"
 fi
 echo "=================================================================="
+echo " To enter server console: ./console.sh (or 'dockconsole' alias)"
 echo " To view server logs:    docker compose logs -f server"
 echo " To view bluemap logs:   docker compose logs -f bluemap"
 echo " To stop the server:     docker compose down"
