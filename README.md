@@ -116,15 +116,50 @@ To run administrative commands (`op <player>`, `whitelist add <player>`, `say`, 
 
 ## Internet Access & Tunneling
 
-### 1. Game Server Access (Playit.gg)
-To allow friends outside your local network to connect without opening router ports or exposing your home IP:
-1. Create a free account at [playit.gg](https://playit.gg).
-2. Generate an agent secret key and add it to `credentials.txt`:
-   ```csv
-   PLAYIT_SECRET_KEY,your_secret_key_from_playit
-   ```
-3. Restart the server (`./start-server.sh` or `start.bat`).
-4. On your Playit dashboard, assign one **Minecraft Java** tunnel (port 25565) and one **Minecraft Bedrock** tunnel (port 19132). Share the generated addresses with your friends.
+### 1. Game Server Access (Playit.gg Zero-Portforwarding)
+
+Playit.gg creates an encrypted outbound tunnel connecting your local Docker server to Playit's global proxy network. Your router requires **zero port-forwarding**, and your personal home IP address is **never exposed**.
+
+#### Step-by-Step Setup:
+1. **Create an Account:**
+   - Sign up for a free account at [playit.gg](https://playit.gg).
+2. **Generate an Agent Secret Key:**
+   - Log in to your Playit dashboard and navigate to **Tunnels** or **Agents**.
+   - Click **Add Agent** (or choose **Docker**).
+   - Playit will display a unique **Secret Key** (a 64-character hexadecimal string).
+   - *(Alternative)*: If you start the server without a key, run `docker compose logs playit` to view the one-time claim URL (e.g. `https://playit.gg/claim/...`) to claim the running agent into your account automatically.
+3. **Save the Key to `credentials.txt`:**
+   - Open `credentials.txt` and paste your key:
+     ```csv
+     PLAYIT_SECRET_KEY,your_64_character_playit_secret_key_here
+     ```
+4. **Create the Java Edition Tunnel:**
+   - On the Playit dashboard under your claimed agent, click **Add Tunnel**.
+   - **Tunnel Type:** Select **Minecraft Java**.
+   - **Local Port:** Enter `25565`.
+   - Click **Add Tunnel**. Playit will generate a public address (e.g. `curious-panda.gl.joinmc.link`).
+5. **Create the Bedrock Crossplay Tunnel:**
+   - Click **Add Tunnel** again.
+   - **Tunnel Type:** Select **Minecraft Bedrock**.
+   - **Local Port:** Enter `19132`.
+   - Click **Add Tunnel**. Playit will assign a Bedrock tunnel address with a designated public port (e.g. `curious-panda.gl.joinmc.link:38194`).
+6. **Start or Restart the Server:**
+   - Linux: `./start-server.sh`
+   - Windows: Double-click `start.bat`
+   - Check tunnel status anytime with:
+     ```bash
+     docker compose logs -f playit
+     ```
+
+#### How Friends Connect:
+- **Java Edition (PC / Mac / Linux):**
+  - Multiplayer -> Direct Connect (or Add Server).
+  - Server Address: `curious-panda.gl.joinmc.link` (default port 25565 is automatically resolved by SRV records).
+- **Bedrock Edition (Phones, Tablets, Consoles, Windows 10/11):**
+  - Play -> Servers -> Add Server.
+  - Server Name: Any name (e.g. `Crossplay Server`).
+  - Server Address: `curious-panda.gl.joinmc.link`.
+  - Port: Enter the specific numeric port assigned to your Bedrock tunnel by Playit (e.g. `38194`).
 
 ---
 
