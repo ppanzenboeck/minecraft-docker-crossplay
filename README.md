@@ -129,18 +129,28 @@ If you are playing on the machine hosting the server, or from another computer/l
 To connect from another device in your home, use the **local IP address** of the host PC running Docker (e.g. `192.168.1.10`).
 
 1. **Find Your Host PC's Local IP Address:**
-   - **Linux:** Open terminal and run:
+   - **Linux (Any distribution including minimal Arch):** Open terminal and run:
      ```bash
-     ip -br a
-     # or:
-     hostname -I
+     ip address
      ```
-     Look for your local IP (typically `192.168.x.x` or `10.0.0.x`; ignore `docker0` / `172.x` virtual bridges).
+     Look for the line starting with `inet` under your active Ethernet or Wi-Fi interface (typically `192.168.x.x` or `10.0.0.x`; ignore `127.0.0.1` loopback and `docker0` / `172.x` virtual bridges).
    - **Windows:** Open Command Prompt or PowerShell and run:
      ```cmd
      ipconfig
      ```
      Look for `IPv4 Address` under your active Wi-Fi or Ethernet adapter (e.g. `192.168.1.10`).
+
+   > [!TIP]
+   > **Quick One-Liner Filters:**  
+   > If you want to filter the output down directly to your local IPv4 address line:
+   > - **Linux:**
+   >   ```bash
+   >   ip address | grep "scope global" | grep -v "docker0"
+   >   ```
+   > - **Windows:**
+   >   ```cmd
+   >   ipconfig | findstr /i "IPv4"
+   >   ```
 
 2. **Connect from Your Laptop or Mobile Device:**
    - **Java Edition:** In Multiplayer -> Direct Connect (or Add Server), enter:
