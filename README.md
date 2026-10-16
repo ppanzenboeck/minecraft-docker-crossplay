@@ -1,6 +1,8 @@
 # Minecraft Docker Crossplay Server (Minecraft 26.3)
 
-A high-performance, containerized cross-platform Minecraft server running **Purpur 26.3** with native Java & Bedrock crossplay, real-time web maps (Dynmap & BlueMap), essential gameplay plugins, and safe secret credentials injection.
+A high-performance, containerized cross-platform Minecraft server running **Purpur 26.3** with native Java & Bedrock crossplay, real-time web maps (BlueMap & Dynmap), safe RCON interactive console access, and credentials isolation.
+
+Runs natively on **Linux, macOS, and Windows** (with Docker Desktop, no WSL required).
 
 ---
 
@@ -8,26 +10,28 @@ A high-performance, containerized cross-platform Minecraft server running **Purp
 
 - **Crossplay Out-of-the-Box**:
   - **Java Edition** players connect to port `25565` (TCP).
-  - **Bedrock Edition** players (mobile, console, Windows 10/11) connect to port `19132` (UDP/TCP) via bundled **Geyser** and **Floodgate** (no Java account required for Bedrock players).
+  - **Bedrock Edition** players (iOS, Android, Xbox, PlayStation, Switch, Windows 10/11) connect to port `19132` (UDP/TCP) via bundled **Geyser Standalone** and **Floodgate** (no Java account required for Bedrock players).
+- **Interactive & Safe Server Console (RCON)**:
+  - Cross-platform console launcher ([`console.sh`](./console.sh) / [`console.bat`](./console.bat)) powered by a lightweight Docker container.
+  - Safely type server commands (`op`, `whitelist`, `say`, `save-all`). Pressing `Ctrl + C` or typing `exit` safely disconnects without killing the server.
 - **Web Map Support**:
-  - **BlueMap** (3D WebGL real-time map) running on `http://localhost:8100` with canonical structure in `plugins/bluemap/`.
-  - **Dynmap** ready in `plugins/dynmap/` (awaiting upstream Spigot/CraftBukkit 26.3 NMS adapter release).
-- **Updated Plugins (26.3 Compatible)**:
+  - **BlueMap (3D WebGL real-time map)**: Active and rendered on `http://localhost:8100` and automatically exposed via a free Cloudflare HTTPS tunnel.
+  - **Dynmap**: Preconfigured on port `8123` (temporarily disabled via `Dynmap.jar.disabled` until upstream publishes official 26.3 Spigot/Mojang class mappings).
+- **Essential 26.3 Gameplay Plugins**:
   - **Purpur 26.3** (High-performance Paper fork with custom optimizations)
   - **OpenInv 5.3.5** (View and edit online/offline player inventories and Ender chests)
-  - **DeadChest** (Secure death chests with timers and hologram coordinates)
+  - **DeadChest 4.31.1** (Secure death chests with timers and hologram coordinates)
   - **Multiverse-Core 5.8.1** (Multi-world management)
-  - **Minepacks** (Personal player backpack storage)
-  - **Timber** (Fast tree felling)
-  - **LoginSecurity** (Password protection for accounts)
-  - **ViaVersion** (Auto-updated client compatibility layer)
+  - **Minepacks 2.5.7** (Personal player backpack storage)
+  - **Timber 1.6.3** (Fast tree felling)
+  - **LoginSecurity 3.3.0** (Password protection for accounts)
+  - **ViaVersion 5.12.1** (Auto-updated client compatibility layer)
   - **Spark** (Integrated performance profiling)
 - **Zero-Sudo / Userspace Accessible**:
-  - Docker containers run with mapped `PUID=1000` and `PGID=1000`.
-  - All generated worlds, logs, configs, and player data remain directly editable by your local user account without requiring `sudo`.
+  - Containers run with mapped `PUID=1000` and `PGID=1000`.
+  - All generated worlds, logs, configs, and player data remain directly editable by your local user account without `sudo`.
 - **Public Git Safe**:
-  - Credentials and private keys (e.g. Playit.gg secret token, RCON passwords) are kept out of version control via `credentials.txt` and `.gitignore`.
-  - Templated using `credentials.example.txt`.
+  - Credentials and private keys (Playit secret token, RCON passwords, Floodgate private keys) are isolated in `credentials.txt` and `.env` (gitignored).
 
 ---
 
@@ -38,7 +42,11 @@ A high-performance, containerized cross-platform Minecraft server running **Purp
 Copy `credentials.example.txt` to `credentials.txt`:
 
 ```bash
+# Linux / macOS
 cp credentials.example.txt credentials.txt
+
+# Windows
+copy credentials.example.txt credentials.txt
 ```
 
 Edit `credentials.txt` with your preferred settings:
@@ -53,25 +61,44 @@ SERVER_PORT,25565
 BEDROCK_PORT,19132
 DYNMAP_PORT,8123
 BLUEMAP_PORT,8100
+RCON_PORT,25575
+RCON_PASSWORD,your_secure_rcon_password_here
 SERVER_NAME,P.A.N.Z. Crossplay Server
 SERVER_MOTD,Welcome to our Minecraft 26.3 Crossplay Server!
 ```
 
-> **Note**: `credentials.txt` is gitignored so your secret keys and IP configs will never be committed or pushed to GitHub.
+> [!IMPORTANT]
+> `credentials.txt` and `.env` are strictly gitignored so your personal secret tokens and passwords will never be committed or pushed to GitHub.
+
+---
 
 ### 2. Launch the Server
 
-Run the launch script:
+| Operating System | Command |
+| :--- | :--- |
+| **Linux / macOS** | `./start-server.sh` |
+| **Windows** | Double-click `start.bat` *(or run `start.bat` in Command Prompt / PowerShell)* |
 
-```bash
-./start-server.sh
-```
+The launch script will automatically:
+1. Parse your `credentials.txt` and update `.env`.
+2. Synchronize server properties and RCON configuration.
+3. Synchronize Floodgate authentication keys between Paper and Geyser.
+4. Launch the Docker Compose stack with auto-restart enabled (`restart: unless-stopped`).
+5. Print all connection ports and the live Cloudflare BlueMap HTTPS link.
 
-The script will:
-1. Parse your `credentials.txt` (CSV / KEY=VALUE format).
-2. Export variables to `.env` and synchronize `rtxsurvival/server.properties`.
-3. Verify directory permissions (`PUID:PGID`).
-4. Launch the Docker Compose services in the background.
+---
+
+### 3. Server Console Management
+
+To run administrative commands (`op <player>`, `whitelist add <player>`, `say`, `save-all`):
+
+| Operating System | Command |
+| :--- | :--- |
+| **Linux / macOS** | `./console.sh` *(or use one-off: `./console.sh "op player"`)* |
+| **Windows** | Double-click `console.bat` |
+
+> [!TIP]
+> Unlike `docker attach` (where pressing `Ctrl + C` sends a kill signal that shuts down Minecraft), the RCON console launcher is **100% safe**. You can press `Ctrl + C` or type `exit` at any time to return to your command prompt without disturbing the server.
 
 ---
 
@@ -81,8 +108,71 @@ The script will:
 | :--- | :--- | :--- | :--- |
 | **Java Edition** | `25565` | TCP | Main Minecraft Java server port |
 | **Bedrock Edition** | `19132` | UDP / TCP | Geyser Bedrock crossplay proxy |
+| **RCON Console** | `25575` | TCP | Internal remote console (`127.0.0.1` only) |
+| **BlueMap 3D** | `8100` | HTTP | 3D WebGL viewer (`http://localhost:8100`) |
 | **Dynmap** | `8123` | HTTP | 2D/3D map viewer (`http://localhost:8123`) |
-| **BlueMap** | `8100` | HTTP | 3D WebGL viewer (`http://localhost:8100`) |
+
+---
+
+## Internet Access & Tunneling
+
+### 1. Game Server Access (Playit.gg)
+To allow friends outside your local network to connect without opening router ports or exposing your home IP:
+1. Create a free account at [playit.gg](https://playit.gg).
+2. Generate an agent secret key and add it to `credentials.txt`:
+   ```csv
+   PLAYIT_SECRET_KEY,your_secret_key_from_playit
+   ```
+3. Restart the server (`./start-server.sh` or `start.bat`).
+4. On your Playit dashboard, assign one **Minecraft Java** tunnel (port 25565) and one **Minecraft Bedrock** tunnel (port 19132). Share the generated addresses with your friends.
+
+---
+
+### 2. Web Map Access: Playit vs. Cloudflare Tunnels
+
+#### Why Playit's Free Tier Cannot Host Web Maps:
+- **Playit.gg free tier strictly restricts tunnels to game protocols** (Minecraft Java TCP and Bedrock UDP).
+- Generic web traffic (HTTP / HTTPS / custom TCP) on ports `8100` (BlueMap) or `8123` (Dynmap) is restricted to **Playit Premium ($3 / month)**.
+
+#### The Built-in Solution: Cloudflare Quick Tunnels (100% Free)
+To provide free web map access without paid subscriptions or router port-forwarding, the stack includes a `cloudflared-bluemap` container:
+- Runs automatically when the server starts.
+- Creates an **encrypted public HTTPS tunnel** directly to BlueMap.
+- Displays the live URL upon startup (e.g. `https://random-words.trycloudflare.com`).
+- **Limitation:** Quick Tunnels are ephemeral; Cloudflare assigns a new randomized URL every time the container starts.
+
+---
+
+### 3. How to Set Up a Permanent / Static Map URL (Personal Domain)
+
+If you own a domain name (or register one for ~$2–$5/year), you can use **Cloudflare Named Tunnels** for a permanent, bookmarkable URL (e.g. `https://map.yourdomain.com`) with **unlimited bandwidth for $0 forever**:
+
+1. **Add your domain to Cloudflare:**
+   - Sign up at [cloudflare.com](https://cloudflare.com) and point your domain's nameservers to Cloudflare (Free plan).
+2. **Create a Cloudflare Tunnel:**
+   - Go to **Cloudflare Zero Trust** dashboard -> **Networks** -> **Tunnels**.
+   - Click **Create a Tunnel**, choose **Cloudflared**, and name it (e.g. `minecraft-map`).
+   - Copy the tunnel token provided in the Docker command (`eyJh...`).
+3. **Configure Public Hostname:**
+   - In the tunnel settings, add a **Public Hostname**:
+     - **Subdomain:** `map` (or `bluemap`)
+     - **Domain:** `yourdomain.com`
+     - **Service Type:** `HTTP`
+     - **URL:** `bluemap:8100`
+4. **Update `docker-compose.yml`:**
+   Add your token to `credentials.txt`:
+   ```csv
+   CLOUDFLARE_TUNNEL_TOKEN,eyJh...
+   ```
+   In `docker-compose.yml`, change the `cloudflared-bluemap` command from Quick Tunnel to your named token:
+   ```yaml
+     cloudflared-bluemap:
+       image: cloudflare/cloudflared:latest
+       container_name: bluemap-tunnel
+       restart: unless-stopped
+       command: tunnel run --token ${CLOUDFLARE_TUNNEL_TOKEN}
+   ```
+5. Restart the server. Your map will be permanently accessible at `https://map.yourdomain.com` across all server reboots!
 
 ---
 
@@ -90,73 +180,56 @@ The script will:
 
 ```
 .
-├── docker-compose.yml              # Container definitions (server, geyser, bluemap, playit)
-├── start-server.sh                 # Startup wrapper & credentials injector
+├── docker-compose.yml              # Container definitions (server, geyser, bluemap, playit, cloudflared)
+├── start-server.sh                 # Linux/macOS startup wrapper & credentials injector
+├── start.bat                       # Windows startup wrapper (no WSL needed)
+├── console.sh                      # Linux/macOS safe RCON console launcher
+├── console.bat                     # Windows safe RCON console launcher
 ├── credentials.example.txt         # Template for server credentials (safe for git)
-├── credentials.txt                 # Your private credentials (gitignored)
+├── credentials.txt                 # Your private credentials & tokens (gitignored)
 ├── .gitignore                      # Ignore worlds, logs, secrets, and tile caches
 └── rtxsurvival/                    # Minecraft server root directory
-    ├── server.properties           # Main server properties
+    ├── server.properties           # Main server properties (protected by skip-worktree)
     ├── purpur.yml                  # Purpur configurations
     ├── spigot.yml                  # Spigot configurations
     ├── bukkit.yml                  # Bukkit configurations
     ├── config/                     # Paper global & world configs
-    ├── geyser/                     # Geyser Standalone proxy config & packs
+    ├── geyser/                     # Geyser Standalone proxy config & keys
     └── plugins/                    # Server plugins
-        ├── bluemap/                # BlueMap config, data, and web files
+        ├── bluemap/                # BlueMap config, data, and web assets
         ├── OpenInv.jar             # OpenInv 5.3.5 binary
-        ├── dead-chest-4.31.0.jar   # DeadChest 4.31.0 binary
+        ├── dead-chest-4.31.1.jar   # DeadChest 4.31.1 binary
         ├── multiverse-core-5.8.1.jar# Multiverse-Core 5.8.1 binary
         ├── Minepacks.jar           # Minepacks 2.5.7 binary
         ├── Timber-1.6.3.jar        # Timber 1.6.3 binary
         ├── LoginSecurity-*.jar     # LoginSecurity 3.3.0 binary
         ├── ViaVersion.jar          # ViaVersion 5.12.1 binary
-        └── Floodgate-Spigot.jar    # Floodgate 2.2.5 binary
+        ├── Floodgate-Spigot.jar    # Floodgate 2.2.5 binary
+        └── Dynmap.jar.disabled     # Dynmap jar (awaiting upstream 26.3 release)
 ```
 
 ---
 
-## External Access (Playit.gg Tunnel)
+## Common Administrative Commands
 
-If you don't have a public IPv4 address or cannot port forward on your router:
-1. Create a free account at [playit.gg](https://playit.gg).
-2. Generate an agent secret key.
-3. Add the key to `credentials.txt`:
-   ```csv
-   PLAYIT_SECRET_KEY,your_secret_key_from_playit
-   ```
-4. Restart the server (`./start-server.sh`). The playit agent will tunnel your Java and Bedrock ports automatically.
-
----
-
-## Useful Commands
-
-- **View live server console logs**:
+- **Safe Interactive Console**:
+  ```bash
+  ./console.sh      # Linux / macOS
+  console.bat       # Windows
+  ```
+- **View Live Server Logs**:
   ```bash
   docker compose logs -f server
   ```
-- **Attach to Minecraft console** (type commands directly):
+- **View BlueMap Logs**:
   ```bash
-  docker attach server
+  docker compose logs -f bluemap
   ```
-  *(Press `Ctrl+P` followed by `Ctrl+Q` to detach without stopping the server)*
-- **Stop the server safely**:
+- **Stop Server Safely**:
   ```bash
   docker compose down
   ```
-- **Trigger BlueMap full render**:
+- **Trigger BlueMap World Re-render**:
   ```bash
   docker compose exec bluemap java -jar cli.jar -r
   ```
-- **Trigger Dynmap full render**:
-  In the Minecraft server console (or as op in-game):
-  ```
-  dynmap fullrender world
-  ```
-
----
-
-## System Requirements & Notes for Arch Linux / Other Hosts
-
-- **Docker & Docker Compose**: Ensure `docker` and `docker-compose` (or `docker compose` plugin) are installed and the current user is added to the `docker` group (`sudo usermod -aG docker $USER`).
-- **User IDs**: On Arch Linux and most distributions, the default user is `UID=1000` / `GID=1000`. The server startup wrapper ensures files created by Docker remain fully owned by your user account.
