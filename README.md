@@ -211,6 +211,75 @@ If you own a domain name (or register one for ~$2–$5/year), you can use **Clou
 
 ---
 
+## Advanced Administration & Customization
+
+### 1. Bedrock Player Administration (Floodgate Prefix & Linking)
+
+Because Bedrock Edition allows Xbox Gamertags that may contain spaces or clash with Java account names, **Floodgate** automatically prefixes all Bedrock player names with a dot (`.`):
+
+- **Targeting Bedrock Players in Console:**
+  When executing commands via `./console.sh`, `console.bat`, or in-game, you must include the dot prefix:
+  ```
+  op .GamerTag
+  whitelist add .GamerTag
+  gamemode creative .GamerTag
+  ```
+- **Xbox Gamertags With Spaces:**
+  If a Bedrock player's Gamertag contains spaces (e.g. `Cool Miner 99`), wrap the name in quotation marks:
+  ```
+  op ".Cool Miner 99"
+  whitelist add ".Cool Miner 99"
+  ```
+- **Account Linking (Optional):**
+  If a player owns both Java and Bedrock editions, they can link them by running `/linkaccount` in-game so inventories, permissions, and skins stay synced across both devices.
+
+---
+
+### 2. Memory Tuning Guide (`MAX_MEMORY`)
+
+You can control how much RAM is allocated to Minecraft directly in `credentials.txt` via `MAX_MEMORY` (measured in megabytes):
+
+```csv
+MAX_MEMORY,4096
+```
+
+#### Recommended Allocations:
+| `MAX_MEMORY` Value | RAM (MB) | Best For |
+| :--- | :--- | :--- |
+| **`2048`** | 2 GB | Laptops or low-spec hosts with 4–8 GB total system RAM (2–4 players). |
+| **`4096`** *(Default)* | 4 GB | Balanced setup for 5–10 players exploring standard worlds and using web maps. |
+| **`6144`** | 6 GB | Active multiplayer servers (10–15 players) with concurrent world renders. |
+| **`8192`** | 8 GB | High-spec hosts (16–32 GB system RAM) running heavy chunk generation or large groups. |
+
+> [!NOTE]
+> After modifying `MAX_MEMORY` in `credentials.txt`, restart the server (`./start-server.sh` or `start.bat`) to apply the new Java heap limits.
+
+---
+
+### 3. World Migration & Backups (Importing Your Own World)
+
+Because world files are gitignored to keep the repository clean and light, you can import an existing singleplayer world or migrate from another server anytime:
+
+1. **Stop the Server:**
+   ```bash
+   docker compose down
+   ```
+2. **Copy Overworld Files:**
+   - Copy your singleplayer world contents (`region/`, `entities/`, `data/`, `level.dat`) into `rtxsurvival/world/`.
+3. **Migrate Nether & The End (Paper Directory Structure):**
+   - Singleplayer Minecraft stores the Nether in `world/DIM-1/` and The End in `world/DIM1/`.
+   - Paper/Purpur separates them into distinct root directories:
+     - Move the contents of `DIM-1/` into `rtxsurvival/world_nether/DIM-1/`.
+     - Move the contents of `DIM1/` into `rtxsurvival/world_the_end/DIM1/`.
+4. **Re-render the 3D Web Map:**
+   After starting the server, run:
+   ```bash
+   docker compose exec bluemap java -jar cli.jar -r
+   ```
+   BlueMap will scan the new world chunks and update your live map.
+
+---
+
 ## Architecture & Directory Layout
 
 ```
