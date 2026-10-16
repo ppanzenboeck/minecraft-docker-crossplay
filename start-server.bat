@@ -94,6 +94,54 @@ if exist "data\plugins\floodgate\key.pem" (
     )
 )
 
+:: Auto-update Geyser Standalone proxy binary
+echo [*] Ensuring Geyser Standalone is up to date...
+where curl.exe >nul 2>&1
+if %ERRORLEVEL% EQU 0 (
+    curl.exe -s -f -L -o "data\geyser\Geyser-Standalone.jar.tmp" --connect-timeout 5 --max-time 60 "https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/standalone" >nul 2>&1
+    if exist "data\geyser\Geyser-Standalone.jar.tmp" (
+        for %%I in ("data\geyser\Geyser-Standalone.jar.tmp") do (
+            if %%~zI gtr 1000000 (
+                move /y "data\geyser\Geyser-Standalone.jar.tmp" "data\geyser\Geyser-Standalone.jar" >nul
+            ) else (
+                del /f /q "data\geyser\Geyser-Standalone.jar.tmp" >nul
+            )
+        )
+    )
+) else (
+    powershell -NoProfile -ExecutionPolicy Bypass -Command ^
+        "$ErrorActionPreference = 'SilentlyContinue';" ^
+        "try {" ^
+        "  Invoke-WebRequest -Uri 'https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/standalone' -OutFile 'data\geyser\Geyser-Standalone.jar.tmp' -UseBasicParsing -TimeoutSec 60;" ^
+        "  if (Test-Path 'data\geyser\Geyser-Standalone.jar.tmp') {" ^
+        "    if ((Get-Item 'data\geyser\Geyser-Standalone.jar.tmp').Length -gt 1000000) {" ^
+        "      Move-Item -Force 'data\geyser\Geyser-Standalone.jar.tmp' 'data\geyser\Geyser-Standalone.jar';" ^
+        "    } else {" ^
+        "      Remove-Item -Force 'data\geyser\Geyser-Standalone.jar.tmp';" ^
+        "    }" ^
+        "  }" ^
+        "} catch {}"
+)
+
+:: Auto-update ViaBackwards cross-version compatibility plugin
+echo [*] Ensuring ViaBackwards is up to date...
+powershell -NoProfile -ExecutionPolicy Bypass -Command ^
+    "$ErrorActionPreference = 'SilentlyContinue';" ^
+    "try {" ^
+    "  $rel = Invoke-RestMethod -Uri 'https://api.github.com/repos/ViaVersion/ViaBackwards/releases/latest' -UseBasicParsing;" ^
+    "  $asset = $rel.assets | Where-Object { $_.browser_download_url -like '*.jar' } | Select-Object -First 1;" ^
+    "  if ($asset) {" ^
+    "    Invoke-WebRequest -Uri $asset.browser_download_url -OutFile 'data\plugins\ViaBackwards.jar.tmp' -UseBasicParsing -TimeoutSec 30;" ^
+    "    if (Test-Path 'data\plugins\ViaBackwards.jar.tmp') {" ^
+    "      if ((Get-Item 'data\plugins\ViaBackwards.jar.tmp').Length -gt 100000) {" ^
+    "        Move-Item -Force 'data\plugins\ViaBackwards.jar.tmp' 'data\plugins\ViaBackwards.jar';" ^
+    "      } else {" ^
+    "        Remove-Item -Force 'data\plugins\ViaBackwards.jar.tmp';" ^
+    "      }" ^
+    "    }" ^
+    "  }" ^
+    "} catch {}"
+
 echo [*] Starting containers with Docker Compose...
 docker compose up -d
 

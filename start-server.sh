@@ -122,6 +122,31 @@ if [ -f "data/plugins/floodgate/key.pem" ] && [ ! -f "data/geyser/key.pem" ]; th
   cp "data/plugins/floodgate/key.pem" "data/geyser/key.pem"
 fi
 
+# Auto-update Geyser Standalone proxy binary
+echo "[*] Ensuring Geyser Standalone is up to date..."
+if curl -s -f -L -o "data/geyser/Geyser-Standalone.jar.tmp" --connect-timeout 5 --max-time 60 "https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/standalone" 2>/dev/null; then
+  if [ -s "data/geyser/Geyser-Standalone.jar.tmp" ]; then
+    mv "data/geyser/Geyser-Standalone.jar.tmp" "data/geyser/Geyser-Standalone.jar"
+  else
+    rm -f "data/geyser/Geyser-Standalone.jar.tmp"
+  fi
+fi
+
+# Auto-update ViaBackwards cross-version compatibility plugin
+if [ ! -f "data/plugins/ViaBackwards.jar" ] || [ "${AUTO_UPDATE_PLUGINS:-true}" = "true" ]; then
+  echo "[*] Ensuring ViaBackwards is up to date..."
+  VB_URL="$(curl -s --connect-timeout 5 "https://api.github.com/repos/ViaVersion/ViaBackwards/releases/latest" 2>/dev/null | grep -oE 'https://github.com/ViaVersion/ViaBackwards/releases/download/[^"]+\.jar' | head -1 || true)"
+  if [ -n "${VB_URL}" ]; then
+    if curl -s -f -L -o "data/plugins/ViaBackwards.jar.tmp" --connect-timeout 5 --max-time 30 "${VB_URL}" 2>/dev/null; then
+      if [ -s "data/plugins/ViaBackwards.jar.tmp" ]; then
+        mv "data/plugins/ViaBackwards.jar.tmp" "data/plugins/ViaBackwards.jar"
+      else
+        rm -f "data/plugins/ViaBackwards.jar.tmp"
+      fi
+    fi
+  fi
+fi
+
 echo "[*] Starting containers with Docker Compose..."
 docker compose up -d
 

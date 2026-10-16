@@ -26,9 +26,9 @@ join:
 username:
   # Remove special characters like @ and # from the username.
   # Disabling this can be a security risk!
-  filter-special-chars: true
+  filter-special-chars: false
   min-length: 3
-  max-length: 16
+  max-length: 32
 registration:
   # Whether to accept new registrations.
   enabled: true
