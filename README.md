@@ -77,7 +77,7 @@ SERVER_MOTD,Welcome to our Minecraft 26.3 Crossplay Server!
 | Operating System | Command |
 | :--- | :--- |
 | **Linux / macOS** | `./start-server.sh` |
-| **Windows** | Double-click `start.bat` *(or run `start.bat` in Command Prompt / PowerShell)* |
+| **Windows** | Double-click `start-server.bat` *(or run `start-server.bat` in Command Prompt / PowerShell)* |
 
 The launch script will automatically:
 1. Parse your `credentials.txt` and update `.env`.
@@ -205,7 +205,7 @@ Playit.gg creates an encrypted outbound tunnel connecting your local Docker serv
    - Click **Add Tunnel**. Playit will assign a Bedrock tunnel address with a designated public port (e.g. `curious-panda.gl.joinmc.link:38194`).
 6. **Start or Restart the Server:**
    - Linux: `./start-server.sh`
-   - Windows: Double-click `start.bat`
+   - Windows: Double-click `start-server.bat`
    - Check tunnel status anytime with:
      ```bash
      docker compose logs -f playit
@@ -333,7 +333,7 @@ MAX_MEMORY,4096
 | **`8192`** | 8 GB | High-spec hosts (16–32 GB system RAM) running heavy chunk generation or large groups. |
 
 > [!NOTE]
-> After modifying `MAX_MEMORY` in `credentials.txt`, restart the server (`./start-server.sh` or `start.bat`) to apply the new Java heap limits.
+> After modifying `MAX_MEMORY` in `credentials.txt`, restart the server (`./start-server.sh` or `start-server.bat`) to apply the new Java heap limits.
 
 ---
 
@@ -367,7 +367,7 @@ Because world files are gitignored to keep the repository clean and light, you c
 .
 ├── docker-compose.yml              # Container definitions (server, geyser, bluemap, playit, cloudflared)
 ├── start-server.sh                 # Linux/macOS startup wrapper & credentials injector
-├── start.bat                       # Windows startup wrapper (no WSL needed)
+├── start-server.bat                # Windows startup wrapper (no WSL needed)
 ├── console.sh                      # Linux/macOS safe RCON console launcher
 ├── console.bat                     # Windows safe RCON console launcher
 ├── credentials.example.txt         # Template for server credentials (safe for git)
