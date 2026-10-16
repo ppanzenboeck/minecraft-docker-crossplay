@@ -106,6 +106,9 @@ echo  - Java Edition Port:    %SERVER_PORT% (TCP)
 echo  - Bedrock Edition Port: %BEDROCK_PORT% (UDP/TCP)
 echo  - Dynmap Web Map:       http://localhost:%DYNMAP_PORT%
 echo  - BlueMap 3D Web Map:   http://localhost:%BLUEMAP_PORT%
+set "CF_URL="
+for /f "tokens=*" %%U in ('powershell -NoProfile -Command "docker logs bluemap-tunnel 2>&1 | Select-String -Pattern 'https://[a-zA-Z0-9.-]+\.trycloudflare\.com' | ForEach-Object { $_.Matches.Value } | Select-Object -Last 1"') do set "CF_URL=%%U"
+if defined CF_URL echo  - BlueMap Public HTTPS: %CF_URL%
 echo ==================================================================
 echo  To enter server console: console.bat
 echo  To view server logs:    docker compose logs -f server

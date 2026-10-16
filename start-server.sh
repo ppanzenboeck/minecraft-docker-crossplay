@@ -134,7 +134,16 @@ echo " - Java Edition Port:    ${SERVER_PORT} (TCP)"
 echo " - Bedrock Edition Port: ${BEDROCK_PORT} (UDP/TCP)"
 echo " - Dynmap Web Map:       http://localhost:${DYNMAP_PORT}"
 echo " - BlueMap 3D Web Map:   http://localhost:${BLUEMAP_PORT}"
-CF_URL="$(docker logs bluemap-tunnel 2>&1 | grep -oE 'https://[a-zA-Z0-9.-]+\.trycloudflare\.com' | tail -1 || true)"
+# Resolve active Cloudflare public tunnel URL (wait briefly if newly connecting)
+CF_URL=""
+for i in {1..4}; do
+  CF_URL="$(docker logs bluemap-tunnel 2>&1 | grep -oE 'https://[a-zA-Z0-9.-]+\.trycloudflare\.com' | tail -1 || true)"
+  if [ -n "${CF_URL}" ]; then
+    break
+  fi
+  sleep 1
+done
+
 if [ -n "${CF_URL}" ]; then
   echo " - BlueMap Public HTTPS: ${CF_URL}"
 fi
