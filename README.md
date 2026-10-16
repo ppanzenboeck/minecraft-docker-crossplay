@@ -155,11 +155,32 @@ Playit.gg creates an encrypted outbound tunnel connecting your local Docker serv
 - **Java Edition (PC / Mac / Linux):**
   - Multiplayer -> Direct Connect (or Add Server).
   - Server Address: `curious-panda.gl.joinmc.link` (default port 25565 is automatically resolved by SRV records).
-- **Bedrock Edition (Phones, Tablets, Consoles, Windows 10/11):**
+- **Bedrock Edition (Phones, Tablets, Windows 10/11):**
   - Play -> Servers -> Add Server.
   - Server Name: Any name (e.g. `Crossplay Server`).
   - Server Address: `curious-panda.gl.joinmc.link`.
   - Port: Enter the specific numeric port assigned to your Bedrock tunnel by Playit (e.g. `38194`).
+
+---
+
+### Platform Compatibility & Tested Devices
+
+> [!NOTE]
+> This server has been **actively tested and verified on PC** (Linux & Windows Java Edition, and Windows 10/11 Bedrock Edition). Mobile and console compatibility are detailed below:
+
+| Platform | Status | Connection Method & Requirements |
+| :--- | :--- | :--- |
+| **PC (Java)** | **Verified** | Native "Direct Connect" / "Add Server" in Minecraft Java. |
+| **PC (Windows 10/11 Bedrock)** | **Verified** | Built-in "Add Server" button in Bedrock menu. |
+| **Mobile (iOS & Android)** | **Supported** | Built-in "Add Server" button in Bedrock menu. |
+| **Nintendo Switch (& Switch 2)** | **Supported\*** | Requires **Nintendo Switch Online (NSO)** subscription (Nintendo blocks joining external or even local multiplayer without NSO) + BedrockConnect DNS workaround. |
+| **PlayStation (PS4 / PS5)** | **Supported\*** | Requires **PlayStation Plus** + BedrockConnect DNS workaround. |
+| **Xbox (One, Series S/X)** | **Supported\*** | Requires **Xbox Game Pass Core** + BedrockConnect DNS workaround. |
+
+#### \* Note on Consoles (Switch, PlayStation, Xbox):
+Console editions of Minecraft do not include the "Add External Server" button by default (restricted by console platform policies). To connect a console to a custom Bedrock server:
+1. **BedrockConnect (DNS Method):** Set your console's Primary DNS in Network Settings to a public BedrockConnect resolver (such as `104.238.130.180`). When you click any official "Featured Server" in Minecraft, BedrockConnect will open a custom menu letting you enter your Playit server address and port.
+2. **LAN Proxy Apps:** Alternatively, run a free mobile tool (such as *MC Server Connector* on Android/iOS) on the same home Wi-Fi network. The app broadcasts the server locally so it appears directly under the console's **Friends / LAN Games** tab.
 
 ---
 
