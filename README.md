@@ -448,6 +448,8 @@ This project orchestrates and builds upon incredible open-source tools created b
   - [Cloudflare](https://www.cloudflare.com/) — Secure quick and named application tunnels via `cloudflared`.
   - [Playit.gg](https://playit.gg/) — Low-latency game tunnel infrastructure.
   - [itzg/rcon-cli](https://github.com/itzg/rcon-cli) — Lightweight RCON terminal client.
+- **Special thanks**:
+  - [Cyril B (`cbcb00`)](https://github.com/cbcb00) for helping with the initial server setup.
 
 ---
 
