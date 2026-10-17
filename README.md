@@ -8,29 +8,29 @@ Runs natively on **Linux, macOS, and Windows** (with Docker Desktop, no WSL requ
 
 ## Features
 
-- **Crossplay Out-of-the-Box**:
+- **Crossplay out of the box**:
   - **Java Edition** players connect to port `25565` (TCP).
   - **Bedrock Edition** players (iOS, Android, Xbox, PlayStation, Switch, Windows 10/11) connect to port `19132` (UDP/TCP) via bundled **Geyser Standalone** and **Floodgate** (no Java account required for Bedrock players).
-- **Interactive & Safe Server Console (RCON)**:
+- **Interactive & safe server console (RCON)**:
   - Cross-platform console launcher ([`console.sh`](./console.sh) / [`console.bat`](./console.bat)) powered by a lightweight Docker container.
   - Safely type server commands (`op`, `whitelist`, `say`, `save-all`). Pressing `Ctrl + C` or typing `exit` safely disconnects without killing the server.
-- **Web Map Support**:
+- **Web map support**:
   - **BlueMap (3D WebGL real-time map)**: Active and rendered on `http://localhost:8100` and automatically exposed via a free Cloudflare HTTPS tunnel.
   - **Dynmap**: Preconfigured on port `8123` (temporarily disabled via `Dynmap.jar.disabled` until upstream publishes official 26.3 Spigot/Mojang class mappings).
-- **Essential 26.3 Gameplay Plugins**:
-  - **Purpur 26.3** (High-performance Paper fork with custom optimizations)
-  - **OpenInv 5.3.5** (View and edit online/offline player inventories and Ender chests)
-  - **DeadChest 4.31.1** (Secure death chests with timers and hologram coordinates)
-  - **Multiverse-Core 5.8.1** (Multi-world management)
-  - **Minepacks 2.5.7** (Personal player backpack storage)
-  - **Timber 1.6.3** (Fast tree felling)
-  - **LoginSecurity 3.3.0** (Password protection for accounts)
-  - **ViaVersion 5.12.1** (Auto-updated client compatibility layer)
-  - **Spark** (Integrated performance profiling)
-- **Zero-Sudo / Userspace Accessible**:
+- **Essential 26.3 gameplay plugins**:
+  - **Purpur 26.3** (high-performance Paper fork with custom optimizations)
+  - **OpenInv 5.3.5** (view and edit online/offline player inventories and Ender chests)
+  - **DeadChest 4.31.1** (secure death chests with timers and hologram coordinates)
+  - **Multiverse-Core 5.8.1** (multi-world management)
+  - **Minepacks 2.5.7** (personal player backpack storage)
+  - **Timber 1.6.3** (fast tree felling)
+  - **LoginSecurity 3.3.0** (password protection for accounts)
+  - **ViaVersion 5.12.1** (auto-updated client compatibility layer)
+  - **Spark** (integrated performance profiling)
+- **Zero-sudo / userspace accessible**:
   - Containers run with mapped `PUID=1000` and `PGID=1000`.
   - All generated worlds, logs, configs, and player data remain directly editable by your local user account without `sudo`.
-- **Public Git Safe**:
+- **Public Git safe**:
   - Credentials and private keys (Playit secret token, RCON passwords, Floodgate private keys) are isolated in `credentials.txt` and `.env` (gitignored).
 
 ---
@@ -120,16 +120,16 @@ To run administrative commands (`op <player>`, `whitelist add <player>`, `say`, 
 
 If you are playing on the machine hosting the server, or from another computer/laptop/phone connected to the same home Wi-Fi network, you **do not need Playit.gg or any internet tunnels**.
 
-#### A. Playing on the Host Machine (Same PC running Docker):
-- **Java Edition:** Direct Connect to `localhost` (or `127.0.0.1:25565`).
-- **Bedrock Edition:** Add Server with Address `127.0.0.1` and Port `19132`.
-- **BlueMap Web Map:** Open your browser to `http://localhost:8100`.
+#### A. Playing on the host machine (same PC running Docker):
+- **Java Edition:** Direct connect to `localhost` (or `127.0.0.1:25565`).
+- **Bedrock Edition:** Add server with address `127.0.0.1` and port `19132`.
+- **BlueMap web map:** Open your browser to `http://localhost:8100`.
 
-#### B. Playing from Another Device on Same Wi-Fi (e.g. Laptop, Phone, Tablet):
+#### B. Playing from another device on the same Wi-Fi (e.g., laptop, phone, tablet):
 To connect from another device in your home, use the **local IP address** of the host PC running Docker (e.g. `192.168.1.10`).
 
-1. **Find Your Host PC's Local IP Address:**
-   - **Linux (Any distribution including minimal Arch):** Open terminal and run:
+1. **Find your host PC's local IP address:**
+   - **Linux (any distribution including minimal Arch):** Open a terminal and run:
      ```bash
      ip address
      ```
@@ -141,7 +141,7 @@ To connect from another device in your home, use the **local IP address** of the
      Look for `IPv4 Address` under your active Wi-Fi or Ethernet adapter (e.g. `192.168.1.10`).
 
    > [!TIP]
-   > **Quick One-Liner Filters:**  
+   > **Quick one-liner filters:**  
    > If you want to filter the output down directly to your local IPv4 address line:
    > - **Linux:**
    >   ```bash
@@ -152,7 +152,7 @@ To connect from another device in your home, use the **local IP address** of the
    >   ipconfig | findstr /i "IPv4"
    >   ```
 
-2. **Connect from Your Laptop or Mobile Device:**
+2. **Connect from your laptop or mobile device:**
    - **Java Edition:** In Multiplayer -> Direct Connect (or Add Server), enter:
      ```
      192.168.1.10:25565
@@ -162,48 +162,48 @@ To connect from another device in your home, use the **local IP address** of the
      - **Server Name:** `Home Server`
      - **Server Address:** `192.168.1.10`
      - **Port:** `19132` (the standard Bedrock default port).
-   - **BlueMap 3D Map:** Open any browser on your laptop or phone:
+   - **BlueMap 3D map:** Open any browser on your laptop or phone:
      ```
      http://192.168.1.10:8100
      ```
 
 > [!TIP]
-> **Firewall Note:** If connection times out from another local device, check that the host PC firewall permits local incoming connections:
-> - **Windows:** If prompted by Windows Defender Firewall, check **"Allow on Private networks"**.
+> **Firewall note:** If the connection times out from another local device, check that the host PC firewall permits local incoming connections:
+> - **Windows:** If prompted by Windows Defender Firewall, check **"Allow on private networks"**.
 > - **Linux:** If using `ufw`, allow local subnet traffic (e.g., `sudo ufw allow 25565/tcp && sudo ufw allow 19132/udp && sudo ufw allow 8100/tcp`).
 
 ---
 
 ## Internet Access & Tunneling
 
-### 2. Game Server Access (Playit.gg Zero-Portforwarding)
+### 1. Game Server Access (Playit.gg Zero Port-Forwarding)
 
 Playit.gg creates an encrypted outbound tunnel connecting your local Docker server to Playit's global proxy network. Your router requires **zero port-forwarding**, and your personal home IP address is **never exposed**.
 
-#### Step-by-Step Setup:
-1. **Create an Account:**
+#### Step-by-step setup:
+1. **Create an account:**
    - Sign up for a free account at [playit.gg](https://playit.gg).
-2. **Generate an Agent Secret Key:**
+2. **Generate an agent secret key:**
    - Log in to your Playit dashboard and navigate to **Tunnels** or **Agents**.
    - Click **Add Agent** (or choose **Docker**).
    - Playit will display a unique **Secret Key** (a 64-character hexadecimal string).
    - *(Alternative)*: If you start the server without a key, run `docker compose logs playit` to view the one-time claim URL (e.g. `https://playit.gg/claim/...`) to claim the running agent into your account automatically.
-3. **Save the Key to `credentials.txt`:**
+3. **Save the key to `credentials.txt`:**
    - Open `credentials.txt` and paste your key:
      ```csv
      PLAYIT_SECRET_KEY,your_64_character_playit_secret_key_here
      ```
-4. **Create the Java Edition Tunnel:**
+4. **Create the Java Edition tunnel:**
    - On the Playit dashboard under your claimed agent, click **Add Tunnel**.
-   - **Tunnel Type:** Select **Minecraft Java**.
-   - **Local Port:** Enter `25565`.
+   - **Tunnel type:** Select **Minecraft Java**.
+   - **Local port:** Enter `25565`.
    - Click **Add Tunnel**. Playit will generate a public address (e.g. `curious-panda.gl.joinmc.link`).
-5. **Create the Bedrock Crossplay Tunnel:**
+5. **Create the Bedrock crossplay tunnel:**
    - Click **Add Tunnel** again.
-   - **Tunnel Type:** Select **Minecraft Bedrock**.
-   - **Local Port:** Enter `19132`.
+   - **Tunnel type:** Select **Minecraft Bedrock**.
+   - **Local port:** Enter `19132`.
    - Click **Add Tunnel**. Playit will assign a Bedrock tunnel address with a designated public port (e.g. `curious-panda.gl.joinmc.link:38194`).
-6. **Start or Restart the Server:**
+6. **Start or restart the server:**
    - Linux: `./start-server.sh`
    - Windows: Double-click `start-server.bat`
    - Check tunnel status anytime with:
@@ -211,14 +211,14 @@ Playit.gg creates an encrypted outbound tunnel connecting your local Docker serv
      docker compose logs -f playit
      ```
 
-#### How Friends Connect:
+#### How friends connect:
 - **Java Edition (PC / Mac / Linux):**
   - Multiplayer -> Direct Connect (or Add Server).
-  - Server Address: `curious-panda.gl.joinmc.link` (default port 25565 is automatically resolved by SRV records).
-- **Bedrock Edition (Phones, Tablets, Windows 10/11):**
+  - Server address: `curious-panda.gl.joinmc.link` (default port 25565 is automatically resolved by SRV records).
+- **Bedrock Edition (phones, tablets, Windows 10/11):**
   - Play -> Servers -> Add Server.
-  - Server Name: Any name (e.g. `Crossplay Server`).
-  - Server Address: `curious-panda.gl.joinmc.link`.
+  - Server name: Any name (e.g. `Crossplay Server`).
+  - Server address: `curious-panda.gl.joinmc.link`.
   - Port: Enter the specific numeric port assigned to your Bedrock tunnel by Playit (e.g. `38194`).
 
 ---
@@ -237,20 +237,20 @@ Playit.gg creates an encrypted outbound tunnel connecting your local Docker serv
 | **PlayStation (PS4 / PS5)** | **Supported\*** | Requires **PlayStation Plus** + BedrockConnect DNS workaround. |
 | **Xbox (One, Series S/X)** | **Supported\*** | Requires **Xbox Game Pass Core** + BedrockConnect DNS workaround. |
 
-#### \* Note on Consoles (Switch, PlayStation, Xbox):
+#### \* Note on consoles (Switch, PlayStation, Xbox):
 Console editions of Minecraft do not include the "Add External Server" button by default (restricted by console platform policies). To connect a console to a custom Bedrock server:
-1. **BedrockConnect (DNS Method):** Set your console's Primary DNS in Network Settings to a public BedrockConnect resolver (such as `104.238.130.180`). When you click any official "Featured Server" in Minecraft, BedrockConnect will open a custom menu letting you enter your Playit server address and port.
-2. **LAN Proxy Apps:** Alternatively, run a free mobile tool (such as *MC Server Connector* on Android/iOS) on the same home Wi-Fi network. The app broadcasts the server locally so it appears directly under the console's **Friends / LAN Games** tab.
+1. **BedrockConnect (DNS method):** Set your console's primary DNS in network settings to a public BedrockConnect resolver (such as `104.238.130.180`). When you click any official "Featured Server" in Minecraft, BedrockConnect will open a custom menu letting you enter your Playit server address and port.
+2. **LAN proxy apps:** Alternatively, run a free mobile tool (such as *MC Server Connector* on Android/iOS) on the same home Wi-Fi network. The app broadcasts the server locally so it appears directly under the console's **Friends / LAN Games** tab.
 
 ---
 
 ### 2. Web Map Access: Playit vs. Cloudflare Tunnels
 
-#### Why Playit's Free Tier Focuses on Game Protocols:
+#### Why Playit's free tier focuses on game protocols:
 - **Playit.gg free tier is optimized specifically for game traffic** (Minecraft Java TCP and Bedrock UDP).
 - Generic web routing (HTTP / HTTPS / custom TCP) on ports `8100` (BlueMap) or `8123` (Dynmap) is an optional feature available for cheap (visit [playit.gg](https://playit.gg/) for current tiers and plan details).
 
-#### The Built-in Solution: Cloudflare Quick Tunnels (100% Free)
+#### The built-in solution: Cloudflare quick tunnels (100% free)
 To provide free web map access without paid subscriptions or router port-forwarding, the stack includes a `cloudflared-bluemap` container:
 - Runs automatically when the server starts.
 - Creates an **encrypted public HTTPS tunnel** directly to BlueMap.
@@ -265,22 +265,22 @@ If you own a domain name, you can configure **Cloudflare Named Tunnels** for a p
 
 1. **Add your domain to Cloudflare:**
    - Sign up at [cloudflare.com](https://cloudflare.com) and point your domain's nameservers to Cloudflare (Free plan).
-2. **Create a Cloudflare Tunnel:**
-   - Go to **Cloudflare Zero Trust** dashboard -> **Networks** -> **Tunnels**.
+2. **Create a Cloudflare tunnel:**
+   - Go to the **Cloudflare Zero Trust** dashboard -> **Networks** -> **Tunnels**.
    - Click **Create a Tunnel**, choose **Cloudflared**, and name it (e.g. `minecraft-map`).
    - Copy the tunnel token provided in the Docker command (`eyJh...`).
-3. **Configure Public Hostname:**
+3. **Configure a public hostname:**
    - In the tunnel settings, add a **Public Hostname**:
      - **Subdomain:** `map` (or `bluemap`)
      - **Domain:** `yourdomain.com`
-     - **Service Type:** `HTTP`
+     - **Service type:** `HTTP`
      - **URL:** `bluemap:8100`
 4. **Update `docker-compose.yml`:**
    Add your token to `credentials.txt`:
    ```csv
    CLOUDFLARE_TUNNEL_TOKEN,eyJh...
    ```
-   In `docker-compose.yml`, change the `cloudflared-bluemap` command from Quick Tunnel to your named token:
+   In `docker-compose.yml`, change the `cloudflared-bluemap` command from a quick tunnel to your named token:
    ```yaml
      cloudflared-bluemap:
        image: cloudflare/cloudflared:latest
@@ -294,24 +294,24 @@ If you own a domain name, you can configure **Cloudflare Named Tunnels** for a p
 
 ## Advanced Administration & Customization
 
-### 1. Bedrock Player Administration (Floodgate Prefix & Linking)
+### 1. Bedrock Player Administration (Floodgate Prefix and Linking)
 
-Because Bedrock Edition allows Xbox Gamertags that may contain spaces or clash with Java account names, **Floodgate** automatically prefixes all Bedrock player names with a dot (`.`):
+Because Bedrock Edition allows Xbox gamertags that may contain spaces or clash with Java account names, **Floodgate** automatically prefixes all Bedrock player names with a dot (`.`):
 
-- **Targeting Bedrock Players in Console:**
+- **Targeting Bedrock players in the console:**
   When executing commands via `./console.sh`, `console.bat`, or in-game, you must include the dot prefix:
   ```
   op .GamerTag
   whitelist add .GamerTag
   gamemode creative .GamerTag
   ```
-- **Xbox Gamertags With Spaces:**
-  If a Bedrock player's Gamertag contains spaces (e.g. `Cool Miner 99`), wrap the name in quotation marks:
+- **Xbox gamertags with spaces:**
+  If a Bedrock player's gamertag contains spaces (e.g. `Cool Miner 99`), wrap the name in quotation marks:
   ```
   op ".Cool Miner 99"
   whitelist add ".Cool Miner 99"
   ```
-- **Account Linking (Optional):**
+- **Account linking (optional):**
   If a player owns both Java and Bedrock editions, they can link them by running `/linkaccount` in-game so inventories, permissions, and skins stay synced across both devices.
 
 ---
@@ -324,11 +324,11 @@ You can control how much RAM is allocated to Minecraft directly in `credentials.
 MAX_MEMORY,4096
 ```
 
-#### Recommended Allocations:
-| `MAX_MEMORY` Value | RAM (MB) | Best For |
+#### Recommended allocations:
+| `MAX_MEMORY` Value | RAM (MB) | Recommended For |
 | :--- | :--- | :--- |
 | **`2048`** | 2 GB | Laptops or low-spec hosts with 4–8 GB total system RAM (2–4 players). |
-| **`4096`** *(Default)* | 4 GB | Balanced setup for 5–10 players exploring standard worlds and using web maps. |
+| **`4096`** *(default)* | 4 GB | Balanced setup for 5–10 players exploring standard worlds and using web maps. |
 | **`6144`** | 6 GB | Active multiplayer servers (10–15 players) with concurrent world renders. |
 | **`8192`** | 8 GB | High-spec hosts (16–32 GB system RAM) running heavy chunk generation or large groups. |
 
@@ -337,22 +337,22 @@ MAX_MEMORY,4096
 
 ---
 
-### 3. World Migration & Backups (Importing Your Own World)
+### 3. World Migration and Backups (Importing Your Own World)
 
 Because world files are gitignored to keep the repository clean and light, you can import an existing singleplayer world or migrate from another server anytime:
 
-1. **Stop the Server:**
+1. **Stop the server:**
    ```bash
    docker compose down
    ```
-2. **Copy Overworld Files:**
+2. **Copy overworld files:**
    - Copy your singleplayer world contents (`region/`, `entities/`, `data/`, `level.dat`) into `data/world/`.
-3. **Migrate Nether & The End (Paper Directory Structure):**
+3. **Migrate the Nether & The End (Paper directory structure):**
    - Singleplayer Minecraft stores the Nether in `world/DIM-1/` and The End in `world/DIM1/`.
    - Paper/Purpur separates them into distinct root directories:
      - Move the contents of `DIM-1/` into `data/world_nether/DIM-1/`.
      - Move the contents of `DIM1/` into `data/world_the_end/DIM1/`.
-4. **Re-render the 3D Web Map:**
+4. **Re-render the 3D web map:**
    After starting the server, run:
    ```bash
    docker compose exec bluemap java -jar cli.jar -r
@@ -397,24 +397,24 @@ Because world files are gitignored to keep the repository clean and light, you c
 
 ## Common Administrative Commands
 
-- **Safe Interactive Console**:
+- **Safe interactive console**:
   ```bash
   ./console.sh      # Linux / macOS
   console.bat       # Windows
   ```
-- **View Live Server Logs**:
+- **View live server logs**:
   ```bash
   docker compose logs -f server
   ```
-- **View BlueMap Logs**:
+- **View BlueMap logs**:
   ```bash
   docker compose logs -f bluemap
   ```
-- **Stop Server Safely**:
+- **Stop server safely**:
   ```bash
   docker compose down
   ```
-- **Trigger BlueMap World Re-render**:
+- **Trigger BlueMap world re-render**:
   ```bash
   docker compose exec bluemap java -jar cli.jar -r
   ```
@@ -425,17 +425,17 @@ Because world files are gitignored to keep the repository clean and light, you c
 
 This project orchestrates and builds upon incredible open-source tools created by the Minecraft server community:
 
-- **Base Docker Image**: [James Chambers (`05jchambers`)](https://github.com/TheRemote/Legendary-Minecraft-Purpur-Geyser) for the [`legendary-minecraft-purpur-geyser`](https://hub.docker.com/r/05jchambers/legendary-minecraft-purpur-geyser) container base.
-- **Server Software**:
+- **Base Docker image**: [James Chambers (`05jchambers`)](https://github.com/TheRemote/Legendary-Minecraft-Purpur-Geyser) for the [`legendary-minecraft-purpur-geyser`](https://hub.docker.com/r/05jchambers/legendary-minecraft-purpur-geyser) container base.
+- **Server software**:
   - [PurpurMC](https://purpurmc.org/) — High-performance, customizable Paper fork.
   - [PaperMC](https://papermc.io/) — Next-generation Minecraft gameplay server engine.
-- **Crossplay Engine**:
+- **Crossplay engine**:
   - [GeyserMC](https://geysermc.org/) — Bedrock-to-Java protocol translation bridge ([Geyser Standalone](https://github.com/GeyserMC/Geyser)).
   - [Floodgate](https://github.com/GeyserMC/Floodgate) — Hybrid Java authentication without requiring a Java account.
-- **Web Maps & Visualization**:
+- **Web maps & visualization**:
   - [BlueMap](https://bluemap.bluecolored.de/) — Real-time 3D WebGL Minecraft map generator.
   - [Dynmap](https://github.com/webbukkit/dynmap) — Web map system for Spigot / Paper.
-- **Gameplay Plugins & Authors**:
+- **Gameplay plugins & authors**:
   - **DeadChest**: [Stellionix](https://github.com/Stellionix/Deadchest) — Safe player grave inventories with hologram markers.
   - **LoginSecurity**: [lenis0012](https://github.com/lenis0012/LoginSecurity-2) — Account authentication and password management.
   - **OpenInv**: [Jikoo](https://github.com/Jikoo/OpenInv) — Real-time inventory and Ender chest management.
@@ -444,7 +444,7 @@ This project orchestrates and builds upon incredible open-source tools created b
   - **Timber**: [Imperialroma10 (Roman43435)](https://www.spigotmc.org/resources/timber-1-13-1-20-4.113160/) — Fast tree felling utility.
   - **ViaVersion & ViaBackwards**: [ViaVersion Team](https://github.com/ViaVersion) — Client version backward compatibility.
   - **Spark**: [Luck (lucko)](https://spark.lucko.me/) — In-depth server performance profiler.
-- **Networking & Tunnels**:
+- **Networking & tunnels**:
   - [Cloudflare](https://www.cloudflare.com/) — Secure quick and named application tunnels via `cloudflared`.
   - [Playit.gg](https://playit.gg/) — Low-latency game tunnel infrastructure.
   - [itzg/rcon-cli](https://github.com/itzg/rcon-cli) — Lightweight RCON terminal client.
