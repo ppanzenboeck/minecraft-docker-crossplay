@@ -441,7 +441,7 @@ This project orchestrates and builds upon incredible open-source tools created b
   - **OpenInv**: [Jikoo](https://github.com/Jikoo/OpenInv) — Real-time inventory and Ender chest management.
   - **Multiverse-Core**: [The Multiverse Team](https://github.com/Multiverse/Multiverse-Core) — Multi-world generator and dimension manager.
   - **Minepacks**: [GeorgH93](https://github.com/GeorgH93/Minepacks) — Backpack storage system.
-  - **Timber**: Imperialroma10 — Fast tree felling utility.
+  - **Timber**: [Imperialroma10 (Roman43435)](https://www.spigotmc.org/resources/timber-1-13-1-20-4.113160/) — Fast tree felling utility.
   - **ViaVersion & ViaBackwards**: [ViaVersion Team](https://github.com/ViaVersion) — Client version backward compatibility.
   - **Spark**: [Luck (lucko)](https://spark.lucko.me/) — In-depth server performance profiler.
 - **Networking & Tunnels**:
@@ -456,4 +456,5 @@ This project orchestrates and builds upon incredible open-source tools created b
 - **Not an official Minecraft product.** Not approved by or associated with Mojang or Microsoft.
 - Minecraft and related brand assets are registered trademarks of Mojang AB and Microsoft Corporation.
 - All bundled plugins, tools, and libraries remain the intellectual property of their respective creators under their open-source licenses (GPL, Apache 2.0, MIT, and BSD).
+- The orchestration scripts, container configurations, and documentation in this repository are licensed under the [MIT License](LICENSE).
 
