@@ -246,22 +246,22 @@ Console editions of Minecraft do not include the "Add External Server" button by
 
 ### 2. Web Map Access: Playit vs. Cloudflare Tunnels
 
-#### Why Playit's Free Tier Cannot Host Web Maps:
-- **Playit.gg free tier strictly restricts tunnels to game protocols** (Minecraft Java TCP and Bedrock UDP).
-- Generic web traffic (HTTP / HTTPS / custom TCP) on ports `8100` (BlueMap) or `8123` (Dynmap) is restricted to **Playit Premium ($3 / month)**.
+#### Why Playit's Free Tier Focuses on Game Protocols:
+- **Playit.gg free tier is optimized specifically for game traffic** (Minecraft Java TCP and Bedrock UDP).
+- Generic web routing (HTTP / HTTPS / custom TCP) on ports `8100` (BlueMap) or `8123` (Dynmap) is an optional feature available for cheap (visit [playit.gg](https://playit.gg/) for current tiers and plan details).
 
 #### The Built-in Solution: Cloudflare Quick Tunnels (100% Free)
 To provide free web map access without paid subscriptions or router port-forwarding, the stack includes a `cloudflared-bluemap` container:
 - Runs automatically when the server starts.
 - Creates an **encrypted public HTTPS tunnel** directly to BlueMap.
 - Displays the live URL upon startup (e.g. `https://random-words.trycloudflare.com`).
-- **Limitation:** Quick Tunnels are ephemeral; Cloudflare assigns a new randomized URL every time the container starts.
+- **Note:** Quick Tunnels are ephemeral; Cloudflare assigns a new randomized URL whenever the container restarts.
 
 ---
 
 ### 3. How to Set Up a Permanent / Static Map URL (Personal Domain)
 
-If you own a domain name (or register one for ~$2–$5/year), you can use **Cloudflare Named Tunnels** for a permanent, bookmarkable URL (e.g. `https://map.yourdomain.com`) with **unlimited bandwidth for $0 forever**:
+If you own a domain name, you can configure **Cloudflare Named Tunnels** for a permanent, bookmarkable URL (e.g. `https://map.yourdomain.com`) with zero hosting fees:
 
 1. **Add your domain to Cloudflare:**
    - Sign up at [cloudflare.com](https://cloudflare.com) and point your domain's nameservers to Cloudflare (Free plan).
@@ -418,3 +418,42 @@ Because world files are gitignored to keep the repository clean and light, you c
   ```bash
   docker compose exec bluemap java -jar cli.jar -r
   ```
+
+---
+
+## Credits & Acknowledgements
+
+This project orchestrates and builds upon incredible open-source tools created by the Minecraft server community:
+
+- **Base Docker Image**: [James Chambers (`05jchambers`)](https://github.com/TheRemote/Legendary-Minecraft-Purpur-Geyser) for the [`legendary-minecraft-purpur-geyser`](https://hub.docker.com/r/05jchambers/legendary-minecraft-purpur-geyser) container base.
+- **Server Software**:
+  - [PurpurMC](https://purpurmc.org/) — High-performance, customizable Paper fork.
+  - [PaperMC](https://papermc.io/) — Next-generation Minecraft gameplay server engine.
+- **Crossplay Engine**:
+  - [GeyserMC](https://geysermc.org/) — Bedrock-to-Java protocol translation bridge ([Geyser Standalone](https://github.com/GeyserMC/Geyser)).
+  - [Floodgate](https://github.com/GeyserMC/Floodgate) — Hybrid Java authentication without requiring a Java account.
+- **Web Maps & Visualization**:
+  - [BlueMap](https://bluemap.bluecolored.de/) — Real-time 3D WebGL Minecraft map generator.
+  - [Dynmap](https://github.com/webbukkit/dynmap) — Web map system for Spigot / Paper.
+- **Gameplay Plugins & Authors**:
+  - **DeadChest**: [Stellionix](https://github.com/Stellionix/Deadchest) — Safe player grave inventories with hologram markers.
+  - **LoginSecurity**: [lenis0012](https://github.com/lenis0012/LoginSecurity-2) — Account authentication and password management.
+  - **OpenInv**: [Jikoo](https://github.com/Jikoo/OpenInv) — Real-time inventory and Ender chest management.
+  - **Multiverse-Core**: [The Multiverse Team](https://github.com/Multiverse/Multiverse-Core) — Multi-world generator and dimension manager.
+  - **Minepacks**: [GeorgH93](https://github.com/GeorgH93/Minepacks) — Backpack storage system.
+  - **Timber**: Imperialroma10 — Fast tree felling utility.
+  - **ViaVersion & ViaBackwards**: [ViaVersion Team](https://github.com/ViaVersion) — Client version backward compatibility.
+  - **Spark**: [Luck (lucko)](https://spark.lucko.me/) — In-depth server performance profiler.
+- **Networking & Tunnels**:
+  - [Cloudflare](https://www.cloudflare.com/) — Secure quick and named application tunnels via `cloudflared`.
+  - [Playit.gg](https://playit.gg/) — Low-latency game tunnel infrastructure.
+  - [itzg/rcon-cli](https://github.com/itzg/rcon-cli) — Lightweight RCON terminal client.
+
+---
+
+## Legal & Trademarks
+
+- **Not an official Minecraft product.** Not approved by or associated with Mojang or Microsoft.
+- Minecraft and related brand assets are registered trademarks of Mojang AB and Microsoft Corporation.
+- All bundled plugins, tools, and libraries remain the intellectual property of their respective creators under their open-source licenses (GPL, Apache 2.0, MIT, and BSD).
+
