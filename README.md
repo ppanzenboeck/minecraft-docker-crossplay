@@ -221,6 +221,10 @@ Playit.gg creates an encrypted outbound tunnel connecting your local Docker serv
   - Server address: `curious-panda.gl.joinmc.link`.
   - Port: Enter the specific numeric port assigned to your Bedrock tunnel by Playit (e.g. `38194`).
 
+> [!NOTE]
+> **Bedrock Protocol Compatibility (RakNet vs. NetherNet):**  
+> Minecraft Bedrock recently introduced the **NetherNet** protocol (WebRTC requiring HTTP/TCP signaling). Because standard UDP forwarding services like Playit.gg route direct UDP packets, Geyser is explicitly configured to use `transport: raknet` in [`data/geyser/config.yml`](./data/geyser/config.yml) (and `transport=raknet` in `server.properties`). This enforces the proven RakNet UDP protocol and ensures Bedrock players connect smoothly through Playit without handshake timeouts.
+
 ---
 
 ### Platform Compatibility & Tested Devices

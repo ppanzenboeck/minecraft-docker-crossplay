@@ -111,6 +111,7 @@ if [ -f "${SERVER_PROPS}" ]; then
     update_prop "rcon.password" "${RCON_PASSWORD}"
   fi
   [ -n "${MANAGEMENT_SERVER_SECRET:-}" ] && update_prop "management-server-secret" "${MANAGEMENT_SERVER_SECRET}"
+  update_prop "transport" "raknet"
 fi
 
 # Ensure canonical plugin and proxy directories exist

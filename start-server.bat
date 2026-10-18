@@ -73,7 +73,7 @@ if exist "%SERVER_PROPS%" (
     echo [*] Injecting configuration into server.properties...
     powershell -NoProfile -Command ^
         "$p = Get-Content '%SERVER_PROPS%';" ^
-        "$props = @{'server-port'='%SERVER_PORT%'; 'query.port'='%SERVER_PORT%'; 'server-name'='%SERVER_NAME%'; 'motd'='%SERVER_MOTD%'};" ^
+        "$props = @{'server-port'='%SERVER_PORT%'; 'query.port'='%SERVER_PORT%'; 'server-name'='%SERVER_NAME%'; 'motd'='%SERVER_MOTD%'; 'transport'='raknet'};" ^
         "if ('%RCON_PASSWORD%' -ne '') { $props['enable-rcon'] = 'true'; $props['rcon.port'] = '%RCON_PORT%'; $props['rcon.password'] = '%RCON_PASSWORD%' };" ^
         "foreach ($k in $props.Keys) { $pat = '^' + [regex]::Escape($k) + '=.*'; if ($p -match $pat) { $p = $p -replace $pat, ($k + '=' + $props[$k]) } else { $p += ($k + '=' + $props[$k]) } };" ^
         "Set-Content -Path '%SERVER_PROPS%' -Value $p"
